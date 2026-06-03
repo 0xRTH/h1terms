@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Is H1 training on our reports?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f0e8; --card:#fbf8f1; --card2:#f6f1e6; --ink:#1f1c17; --muted:#5f594d; --faint:#938b7c; --line:#ddd4c2; --line2:#cdc2aa;
+    --terms:#5a6675; --terms-ink:#3a4350;
+    --h1:#2f6f9e; --h1-ink:#1f567e;
+    --doc:#2f7d6b; --doc-ink:#1f5a4c;
+    --flag:#a8341f;
+    --bindyes-bg:#efe7cf; --bindyes-ink:#6a5320; --bindyes-bd:#d8c596;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",sans-serif;font-size:15px;line-height:1.55;
+    background-image:radial-gradient(var(--line) 0.5px,transparent 0.5px);background-size:24px 24px;}
+  .wrap{max-width:1120px;margin:0 auto;padding:48px 26px 80px}
+  .masthead{padding:6px 0 0;margin-left:122px}
+  .eyebrow{width:48px;height:3px;background:var(--flag);border-radius:2px;margin:0 0 20px}
+  h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(32px,5.5vw,52px);line-height:1.04;letter-spacing:-.015em;margin:0 0 22px;max-width:22ch}
+  .intro{max-width:70ch;margin:0;font-size:15.5px;line-height:1.65;color:var(--ink)}
+  .intro p{margin:0 0 13px}
+  .intro p:last-child{margin:0}
+  .rule{height:1px;background:var(--line2);border:0;margin:32px 0 0}
+
+  .grid{display:grid;grid-template-columns:78px minmax(0,1fr) minmax(0,1.02fr);column-gap:20px}
+  .h-cell{padding:18px 0 8px;font-size:11.5px;font-weight:600;letter-spacing:.03em;color:var(--faint);text-transform:uppercase;border-bottom:1px solid var(--line2);align-self:end}
+
+  .when{padding:20px 0 0;text-align:right}
+  .when.merge2{grid-row:span 2}
+  .when .d{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;color:var(--ink);line-height:1.3}
+  .when .tag{display:inline-block;margin-top:6px;font-size:10px;font-family:"IBM Plex Mono",monospace;letter-spacing:.04em;padding:1px 6px;border-radius:5px}
+  .tag.terms{background:#e7e9e7;color:var(--terms-ink)} .tag.h1{background:#e4edf4;color:var(--h1-ink)} .tag.doc{background:#e2efe9;color:var(--doc-ink)}
+
+  .cite{position:relative;padding:20px 0 22px 24px;border-left:1px solid var(--line2)}
+  .cite::before{content:"";position:absolute;left:-6.5px;top:26px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--faint)}
+  .r-terms .cite::before{border-color:var(--terms)} .r-h1 .cite::before{border-color:var(--h1)} .r-doc .cite::before{border-color:var(--doc)}
+  .expl{padding:20px 0 22px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-left-width:3px;border-radius:10px;padding:13px 15px;height:100%}
+  .r-terms .cite .card{border-left-color:var(--terms)} .r-h1 .cite .card{border-left-color:var(--h1)} .r-doc .cite .card{border-left-color:var(--doc)}
+  .expl .card{border-left-color:var(--line2);background:var(--card2)}
+
+  .bind{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:5px;display:inline-block;margin:0 0 9px;font-weight:500}
+  .bind.yes{background:var(--bindyes-bg);color:var(--bindyes-ink);border:1px solid var(--bindyes-bd)}
+  .bind.no{background:#eef0ef;color:var(--muted);border:1px dashed #c7bda6}
+
+  .who{font-size:13px;font-weight:600;margin:0 0 3px}
+  .r-terms .who{color:var(--terms-ink)} .r-h1 .who{color:var(--h1-ink)} .r-doc .who{color:var(--doc-ink)}
+  .eff{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);margin:0 0 9px}
+  blockquote{font-family:"Fraunces",serif;font-style:italic;font-size:14.5px;line-height:1.42;margin:0 0 8px;color:var(--ink)}
+  blockquote + blockquote{margin-top:-1px}
+  .qlabel{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;display:inline-block;margin:0 0 4px;padding:1px 7px;border-radius:5px}
+  .qlabel.removed{background:#f7dcd6;color:var(--flag)}
+  .qlabel.current{background:#e6e8e6;color:var(--terms-ink)}
+  .qlabel.alt{background:#f7dcd6;color:var(--flag)}
+  .qlabel.launch{background:#e6e8e6;color:var(--terms-ink)}
+  blockquote.struck{color:var(--muted)}
+  .deftxt{font-size:12.5px;color:var(--muted);font-style:normal;margin:0 0 8px;line-height:1.5}
+  .deftxt b{font-weight:500;color:var(--ink)}
+  .note{font-size:12px;color:var(--faint);margin:8px 0 0;font-style:normal;line-height:1.5}
+  .note.flag{color:var(--flag)}
+  a.src{font-size:12px;font-family:"IBM Plex Mono",monospace;color:var(--h1-ink);text-decoration:none;border-bottom:1px solid #bcd3e3;word-break:break-word;display:inline-block;margin-top:9px}
+  a.src:hover{border-bottom-color:var(--h1)}
+  a.src::after{content:" ↗";opacity:.6}
+  a.src + a.src{margin-left:12px}
+
+  .expl p{margin:0 0 9px;font-size:13.5px;line-height:1.58;color:var(--ink)}
+  .expl p:last-child{margin-bottom:0}
+  .expl em{font-style:italic}
+  .expl .lead{color:var(--muted)}
+  .contra{list-style:none;margin:0;padding:0}
+  .contra li{font-size:13px;line-height:1.5;margin:0 0 8px;padding-left:14px;position:relative;color:var(--ink)}
+  .contra li::before{content:"•";position:absolute;left:0;color:var(--flag)}
+  .contra .ph{font-style:italic}
+
+  .foot{margin-top:36px;font-size:12px;color:var(--faint);line-height:1.6;font-style:italic;border-top:1px solid var(--line);padding-top:16px;padding-left:122px;text-align:left}
+  .conclusion{margin:34px 0 0 122px;text-align:left}
+  .conclusion .eyebrow{margin:0 0 16px}
+  .conclusion h2{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(22px,3vw,30px);line-height:1.1;letter-spacing:-.01em;margin:0 0 14px}
+  .cbody{max-width:74ch}
+  .cbody p{font-size:15.5px;line-height:1.65;color:var(--ink);margin:0 0 14px}
+  .cbody p:last-child{margin:0}
+  .cbody a{color:var(--h1-ink);text-decoration:none;border-bottom:1px solid #bcd3e3}
+  .cbody a:hover{border-bottom-color:var(--h1)}
+
+  @media (max-width:840px){
+    .wrap{padding:34px 15px 60px}
+    .masthead{margin-left:0}
+    .conclusion{margin-left:0}
+    .foot{padding-left:0}
+    .grid{grid-template-columns:1fr;column-gap:0}
+    .h-cell{display:none}
+    .when{text-align:left;padding:22px 0 0 24px;border-left:1px solid var(--line2);position:relative}
+    .when.merge2{grid-row:auto}
+    .when::before{content:"";position:absolute;left:-6.5px;top:26px;width:12px;height:12px;border-radius:50%;background:var(--flag);border:2px solid var(--paper)}
+    .cite{border-left:1px solid var(--line2);padding-top:8px}
+    .cite::before{display:none}
+    .expl{border-left:1px solid var(--line2);padding:0 0 22px 24px}
+    .expl .card{height:auto}
+  }
+  @media print{ body{background:#fff} a.src{color:#1f567e} .card{height:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow"></div>
+    <h1>Is H1 training on our reports?</h1>
+    <div class="intro">
+      <p>When I saw the H1 Platform announcement, I got frustrated by how unclear HackerOne still is about whether researcher data can be used for AI training or AI-powered testing. The same questions had already been raised publicly a few months ago, but the public wording still felt vague to me. So I went back through the terms and conditions to see what changed over time, and what those changes allow compared to the public statements.</p>
+      <p>What follows is a non-exhaustive timeline of those changes. I have tried to stay factual, while also showing the strongest concern the wording could reasonably allow. This is not proof of what HackerOne has done; it is a reading of what the terms and statements leave open.</p>
+    </div>
+  </header>
+  <hr class="rule">
+
+  <div class="grid">
+    <div class="h-cell">When</div>
+    <div class="h-cell" style="padding-left:24px">The citation (linked)</div>
+    <div class="h-cell">Interpretation</div>
+
+    <!-- 2020 -->
+    <div class="r-terms when"><div class="d">May 31<br>2020</div><span class="tag terms">terms</span></div>
+    <div class="r-terms cite"><div class="card">
+      <span class="bind yes">Binding contract term</span>
+      <p class="who">General Terms &amp; Conditions, Confidentiality</p>
+      <p class="eff">Effective May 31, 2020 to June 30, 2023</p>
+      <blockquote>"Customers and Finders acknowledge and agree that HackerOne Aggregate Data is not Confidential Information and consent to the collection and use of HackerOne Aggregate Data."</blockquote>
+      <p class="deftxt"><b>"HackerOne Aggregate Data"</b> is defined as "aggregated and anonymized statistical and other information from Finder Submissions… used for… reporting, research, improvements of the Platform and the Services, industry collaboration, and other reasonable business purposes."</p>
+      <p class="note"><strong>Context:</strong> This is the old confidentiality section. It separates full report content, treated as Confidential Information, from Aggregate Data, treated as anonymized/pooled data HackerOne can use for platform and research purposes. No mention of AI, models, or training.</p>
+      <a class="src" href="https://www.hackerone.com/terms/2020" target="_blank" rel="noopener noreferrer">hackerone.com/terms/2020</a>
+    </div></div>
+    <div class="r-terms expl"><div class="card">
+      <p>From the earliest terms, HackerOne carves out "Aggregate Data" (anonymized, pooled information from reports) as not confidential, and gets consent to use it for research, improvements and "other reasonable business purposes." This is the direct predecessor of what is later renamed "Non-Identifying Data."</p>
+      <p class="lead">Your full report stays confidential. The broad right to use anonymized report data exists from the start.</p>
+    </div></div>
+
+    <!-- 2023 -->
+    <div class="r-terms when"><div class="d">Jul 1<br>2023</div><span class="tag terms">terms</span></div>
+    <div class="r-terms cite"><div class="card">
+      <span class="bind yes">Binding contract term</span>
+      <p class="who">General Terms &amp; Conditions, §3.1</p>
+      <p class="eff">Effective July 1, 2023</p>
+      <blockquote>Non-Identifying Data "is not Confidential Information… consent to its use by HackerOne without restriction, including but not limited to, improving the Platform and Services, and security industry research and collaboration."</blockquote>
+      <p class="note"><strong>Context:</strong> This is where the old Aggregate Data concept becomes "Non-Identifying Data." It is still framed as aggregated/anonymized information, separate from the confidential report itself. Still no AI / training language.</p>
+      <a class="src" href="https://www.hackerone.com/terms/general-2023" target="_blank" rel="noopener noreferrer">hackerone.com/terms/general-2023</a>
+    </div></div>
+    <div class="r-terms expl"><div class="card">
+      <p>The 2020 "Aggregate Data" concept is renamed "Non-Identifying Data," now usable "without restriction."</p>
+      <p>The wording is expansive ("and other information," "without restriction"), so a wide range of report-derived material can fall inside it. There is still no AI or training language; this is the container that "training" gets added to later.</p>
+    </div></div>
+
+    <!-- July 2024 -->
+    <div class="r-terms when"><div class="d">Jul 20<br>2024</div><span class="tag terms">terms</span></div>
+    <div class="r-terms cite"><div class="card">
+      <span class="bind yes">Binding contract term</span>
+      <p class="who">General Terms &amp; Conditions, §3.1 (confidentiality)</p>
+      <p class="eff">Effective July 20, 2024</p>
+      <blockquote>HackerOne "may use Confidential Information to develop and/or improve its Services (for example, to identify trends, and to train AI models) provided such use does not result in disclosure of Confidential Information to unauthorized third parties."</blockquote>
+      <p class="note"><strong>Context:</strong> This sits inside the confidentiality clause. In these terms, Confidential Information includes the content of Finder Submissions, so this is not limited to anonymized/aggregate data.</p>
+      <p class="note flag">First appearance of "train AI models", attached to Confidential Information, which includes the full report.</p>
+      <a class="src" href="https://www.hackerone.com/terms/general/2025" target="_blank" rel="noopener noreferrer">hackerone.com/terms/general/2025 (archived 2024 text)</a>
+    </div></div>
+    <div class="r-terms expl"><div class="card">
+      <p>This is the first time "train AI models" appears, and it is attached to Confidential Information, which includes the content of Finder Submissions, not only anonymized aggregates. It sits inside a routine-sounding "develop and improve" clause.</p>
+      <p>For as long as this version was in force, the contract appears to let HackerOne use Confidential Information, including report content, to train AI models. The stated limit is that the use must not result in disclosure of Confidential Information to unauthorized third parties.</p>
+    </div></div>
+
+    <!-- Mar 2025 -->
+    <div class="r-terms when"><div class="d">Mar 27<br>2025</div><span class="tag terms">terms</span></div>
+    <div class="r-terms cite"><div class="card">
+      <span class="bind yes">Binding contract term</span>
+      <p class="who">Community Member Terms, §8 (ownership &amp; licenses)</p>
+      <p class="eff">Effective March 27, 2025</p>
+      <blockquote>"HackerOne does not claim any ownership rights in any Community Member Data."</blockquote>
+      <blockquote>"By making any Community Member Data available to a Customer through the Services, you hereby grant to HackerOne a perpetual, irrevocable, non-exclusive, transferable, sublicensable, worldwide, royalty-free license to use, copy, reproduce, display, modify, adapt, transmit, and distribute copies of that Community Member Data, for the purposes of providing and (in a manner consistent with section 3 of the General Terms and Conditions) improving the Services."</blockquote>
+      <p class="note"><strong>Context:</strong> This is the researcher/community-member license. It says researchers keep ownership, but also grants HackerOne broad use rights tied back to the General Terms §3.</p>
+      <a class="src" href="https://www.hackerone.com/terms/community/2025" target="_blank" rel="noopener noreferrer">hackerone.com/terms/community/2025</a>
+    </div></div>
+    <div class="r-terms expl"><div class="card">
+      <p>This is the line most often cited to reassure researchers: <em>you keep your IP.</em> But IP is not the whole question. Copyright mainly protects the text/expression of your report, not the underlying ideas, procedures, or methods in the same way.</p>
+      <p>Techniques, novel attack ideas, and know-how may be protected by other things in some situations, including contract, confidentiality, trade secret, patents, or program rules, but "you retain your IP" does not by itself tell you whether the substance of the research can be used for product improvement or training.</p>
+      <p>And as the grant on the left shows, the license you do give is perpetual, irrevocable, sublicensable, transferable and worldwide, limited by the stated purpose, which points to §3, the section that permitted AI training at the time. So you can keep ownership and still have granted broad use rights. Ownership here answers less than it first appears to.</p>
+    </div></div>
+
+    <!-- PTaaS marketing -->
+    <div class="r-h1 when"><div class="d">late Jan<br>2026</div><span class="tag h1">marketing</span></div>
+    <div class="r-h1 cite"><div class="card">
+      <span class="bind no">Not contractually binding · marketing</span>
+      <p class="who">HackerOne, Agentic PTaaS launch marketing</p>
+      <p class="eff">~late January 2026</p>
+      <blockquote>The agents are "trained and refined using proprietary exploit intelligence informed by years of testing real enterprise systems."</blockquote>
+      <p class="note"><strong>Context:</strong> The Register article is about researcher concern over HackerOne's AI policy. This phrase was quoted as launch marketing for Agentic PTaaS, not as contract language. Rice later said on the podcast that this marketing line was corrected.</p>
+      <a class="src" href="https://www.theregister.com/security/2026/02/18/hackerone-updates-ai-policy-after-researchers-raise-concerns/4526602" target="_blank" rel="noopener noreferrer">The Register (marketing line)</a>
+    </div></div>
+    <div class="r-h1 expl"><div class="card">
+      <p>The launch described the new pentest agents as trained on "proprietary exploit intelligence informed by years of testing real enterprise systems."</p>
+      <p>Researchers asked what that intelligence consisted of and whether it included their reports. HackerOne later said the marketing wording was corrected.</p>
+    </div></div>
+
+    <!-- Sprague LinkedIn -->
+    <div class="r-h1 when"><div class="d">Feb 18<br>2026</div><span class="tag h1">statement</span></div>
+    <div class="r-h1 cite"><div class="card">
+      <span class="bind no">Not contractually binding · statement</span>
+      <p class="who">Kara Sprague, CEO, LinkedIn statement</p>
+      <p class="eff">February 18, 2026</p>
+      <blockquote>"HackerOne does not train generative AI models, internally or through third-party providers, on researcher submissions or customer confidential data."</blockquote>
+      <blockquote>"You are not inputs to our models."</blockquote>
+      <p class="note"><strong>Context:</strong> This was HackerOne's public response to researcher concern after the Agentic PTaaS wording. The important limit is that it says "generative AI models" and names "researcher submissions" and "customer confidential data."</p>
+      <a class="src" href="https://www.linkedin.com/posts/ksprague08_hai-security-trust-hackerone-help-center-activity-7428166270883266560-GeBF" target="_blank" rel="noopener noreferrer">linkedin.com (Kara Sprague post)</a>
+      <a class="src" href="https://www.theregister.com/security/2026/02/18/hackerone-updates-ai-policy-after-researchers-raise-concerns/4526602" target="_blank" rel="noopener noreferrer">The Register (coverage)</a>
+    </div></div>
+    <div class="r-h1 expl"><div class="card">
+      <p>Read precisely, the denial covers training <em>generative</em> models on <em>submissions or confidential data.</em> It is worded that narrowly.</p>
+      <p>It does not clearly explain whether report-derived, aggregated/anonymized Non-Identifying Data is also off-limits. Anonymization removes identifying details, but the terms do not say how much technical substance remains after aggregation. So the denial can be true while a separate question remains open: can non-identifying, report-derived material be used for training or improvement?</p>
+    </div></div>
+
+    <!-- Rice podcast -->
+    <div class="r-h1 when"><div class="d">Feb 19<br>2026</div><span class="tag h1">interview</span></div>
+    <div class="r-h1 cite"><div class="card">
+      <span class="bind no">Not contractually binding · interview</span>
+      <p class="who">Alex Rice, CTO &amp; co-founder, Critical Thinking Podcast, Ep. 162</p>
+      <p class="eff">February 19, 2026</p>
+      <blockquote>"a pretty limited license solely for purposes of improving and providing our services."</blockquote>
+      <blockquote>On anonymized data: "we're not using that today to train AI models."</blockquote>
+      <blockquote>On broader AI training, he says HackerOne is not using anonymized aggregate analysis today to train AI models, and that training base vulnerability-finding capability is not where HackerOne sees its product differentiation.</blockquote>
+      <p class="note"><strong>Context:</strong> This is an interview, not a policy document. The anonymized-data discussion is around 12:59. The license discussion is around 19:43. Auto-captions may vary, so the wording here is intentionally summarized where it is not a clean exact quote.</p>
+      <a class="src" href="https://www.youtube.com/watch?v=Pa4wWv_ONjM&t=779s" target="_blank" rel="noopener noreferrer">YouTube (~12:59 anonymized data)</a>
+      <a class="src" href="https://www.youtube.com/watch?v=Pa4wWv_ONjM&t=1183s" target="_blank" rel="noopener noreferrer">YouTube (~19:43 license)</a>
+      <a class="src" href="https://blog.criticalthinkingpodcast.io/p/hackernotes-ep-162-hackerone-training-ai-on-bug-bounty-data" target="_blank" rel="noopener noreferrer">Episode notes</a>
+    </div></div>
+    <div class="r-h1 expl"><div class="card">
+      <p>He acknowledges the terms were not updated for modern AI, and that is fair. But some of the interview framing is narrower than what the terms appear to allow:</p>
+      <ul class="contra">
+        <li><span class="ph">"a pretty limited license solely for… improving and providing our services":</span> he is describing the Community Terms §8 license. On record it is perpetual, irrevocable, non-exclusive, transferable, sublicensable, worldwide and royalty-free, tied to §3 (which permitted AI training). Weeks later "solely… improving and providing" was removed and the purpose broadened to "develop our products or services," and the cross-referenced §3 now consents to use of Non-Identifying Data for "future products or services." A perpetual, sublicensable, worldwide license is not a "pretty limited" one.</li>
+        <li><span class="ph">"we're not using that today":</span> describes a present choice, not a limit in the terms. Less than three months later, on May 11, 2026, General Terms §3 was changed to name "training" explicitly among the permitted uses of Non-Identifying Data, for "future products or services." The wording went from a stated current practice to a contract that reserves broader rights.</li>
+      </ul>
+    </div></div>
+
+    <!-- Hai docs -->
+    <div class="r-doc when"><div class="d">Apr 9<br>2026</div><span class="tag doc">docs</span></div>
+    <div class="r-doc cite"><div class="card">
+      <span class="bind no">Not contractually binding · documentation</span>
+      <p class="who">HackerOne documentation: Hai Security &amp; Trust + H1 Agentic Pentest</p>
+      <p class="eff">Hai doc dated April 9, 2026; Agentic Pentest doc current at review</p>
+      <blockquote>Hai "does not train, fine-tune, or otherwise improve GenAI or large language models on customer or researcher data."</blockquote>
+      <blockquote>For H1 Agentic Pentest, HackerOne says platform data, including vulnerability reports, is not used to train, fine-tune, or otherwise improve AI models or agents.</blockquote>
+      <p class="note"><strong>Context:</strong> These are help-center / documentation promises, not the terms themselves. They are important because they are more protective than the broad contract wording, but they do not replace the contract language.</p>
+      <a class="src" href="https://docs.hackerone.com/en/articles/10908081-hai-security-trust" target="_blank" rel="noopener noreferrer">docs.hackerone.com (Hai Security &amp; Trust)</a>
+      <a class="src" href="https://docs.hackerone.com/en/articles/14499410-h1-agentic-pentest-reasoning-and-context" target="_blank" rel="noopener noreferrer">docs.hackerone.com (H1 Agentic Pentest)</a>
+    </div></div>
+    <div class="r-doc expl"><div class="card">
+      <p>The promise is not to train on "customer or researcher data." HackerOne has also published Agentic Pentest documentation saying platform data, including vulnerability reports, is not used to train, fine-tune, or otherwise improve AI models or agents for that product.</p>
+      <p>That is an important public statement. The remaining issue is that the binding terms treat aggregated, anonymized data as a separate category, Non-Identifying Data, and allow it to be used broadly, including for "training." If HackerOne means the docs promise to cover all report-derived Non-Identifying Data too, the cleanest version would say that directly in the terms.</p>
+    </div></div>
+
+    <!-- May 2026 date shown once over two blocks -->
+    <div class="r-terms when merge2"><div class="d">May 11<br>2026</div><span class="tag terms">terms</span></div>
+    <div class="r-terms cite"><div class="card">
+      <span class="bind yes">Binding contract term</span>
+      <p class="who">Revised General Terms, §3 (confidentiality)</p>
+      <p class="eff">Effective May 11, 2026</p>
+      <span class="qlabel removed">Removed in this revision</span>
+      <blockquote class="struck">HackerOne "may use Confidential Information to develop and/or improve its Services (for example, to identify trends, and to train AI models)…"</blockquote>
+      <span class="qlabel current">Now reads</span>
+      <blockquote>Non-Identifying Data is consented "without restriction, including but not limited to, benchmarking, testing, training, validating, developing and improving the Platform, the Services or future products or services."</blockquote>
+      <p class="note"><strong>Context:</strong> This is the current binding General Terms page. The important change is that "train AI models" was removed from Confidential Information, while "training" was added to the Non-Identifying Data permission.</p>
+      <a class="src" href="https://www.hackerone.com/terms/general" target="_blank" rel="noopener noreferrer">hackerone.com/terms/general</a>
+    </div></div>
+    <div class="r-terms expl"><div class="card">
+      <p>The clause permitting use of Confidential Information to train AI models was removed. In the same revision, "training" now appears within the Non-Identifying Data permission, consented without restriction for "developing… future products or services."</p>
+      <p>Non-Identifying Data is defined as aggregated and anonymized information from reports and other platform/customer data. Anonymization removes identifying details, but the terms do not explain how much technical detail is removed. That leaves open whether non-identifying techniques, patterns, or lessons from reports can remain useful inside that data.</p>
+    </div></div>
+    <div class="r-terms cite"><div class="card">
+      <span class="bind yes">Binding contract term</span>
+      <p class="who">Revised Community Member Terms, §8.2 &amp; Platform Tools §2.2</p>
+      <p class="eff">Effective May 11, 2026</p>
+      <blockquote>§8.2: "…a perpetual, irrevocable, non-exclusive, transferable, sublicensable, worldwide, royalty-free license to use, copy, reproduce, display, modify, adapt, transmit, and distribute copies of that Community Member Data for our business purposes, including to provide and develop our products or services."</blockquote>
+      <blockquote>Platform Tools §2.2: "…a perpetual, irrevocable, worldwide, fully paid-up and royalty-free license… to analyze, create derivative works from, and otherwise use PT Output generated by any Platform Tool… for… improving… all HackerOne products and services."</blockquote>
+      <p class="note"><strong>Context:</strong> §8.2 covers Community Member Data generally. Platform Tools §2.2 is separate and covers PT Output. "PT Output" (§1.2) is content a Platform Tool generates "by leveraging AI, machine learning and other automated technologies." HackerOne's May 2026 update lists the "Hai Report Assistant Agent" as an example of an assistive tool.</p>
+      <a class="src" href="https://www.hackerone.com/terms/community" target="_blank" rel="noopener noreferrer">hackerone.com/terms/community</a>
+      <a class="src" href="https://ma.hacker.one/terms-and-conditions-update-may-2026.html" target="_blank" rel="noopener noreferrer">hackerone.com (May 2026 update notice)</a>
+    </div></div>
+    <div class="r-terms expl"><div class="card">
+      <p>The prior version licensed your data "for providing and improving the Services" and tied that purpose back to §3 of the General Terms. This version changes the purpose to "for our business purposes, including to provide and develop our products or services," and the cross-reference that previously bounded it is gone.</p>
+      <p>That is a real broadening. "Business purposes" and "develop our products or services" are wider than simply providing and improving the existing Services. Combined with the current §3 language, it gives HackerOne much more room to use Community Member Data for product development, not just to operate the bug bounty workflow.</p>
+      <p>Then there is a separate Platform Tools clause for PT Output. That matters because HackerOne's May 2026 update points to AI assistive tools such as the Hai Report Assistant Agent. If a report, or part of a report, is generated with an H1-provided AI tool, that generated output may fall under PT Output.</p>
+      <p>The two grants are not the same. The normal reports license (§8.2) lets HackerOne use, copy, reproduce, display, modify, adapt, transmit and distribute Community Member Data. The PT Output license (§2.2) adds stronger verbs the reports license does not name: "analyze," "create derivative works from," and "otherwise use." So using an H1-provided AI tool can put at least the AI-generated part of the report under a broader grant than if you wrote it yourself.</p>
+    </div></div>
+
+    <!-- June 2026 H1 Platform launch -->
+    <div class="r-h1 when"><div class="d">Jun 2<br>2026</div><span class="tag h1">product</span></div>
+    <div class="r-h1 cite"><div class="card">
+      <span class="bind no">Not contractually binding · web page</span>
+      <p class="who">H1 Platform launch, H1 Continuous Testing product page</p>
+      <p class="eff">Announced June 2, 2026</p>
+      <span class="qlabel launch">At launch (June 2, captured 17:35 UTC)</span>
+      <blockquote>Testing is "sharpened using context from HackerOne's 12+ years of real-world vulnerability data and your prior H1 Bounty findings, so agents know where to focus."</blockquote>
+      <span class="qlabel alt">Current wording observed after launch</span>
+      <blockquote>Testing scope and agent focus are shaped by "your own historical findings" and "your engagement only." The page also says: "HackerOne's agents are trained and refined using proprietary exploit intelligence informed by testing real enterprise systems."</blockquote>
+      <p class="note"><strong>Context:</strong> The archive link shows the launch wording. The live product page shows the later wording. The BusinessWire link confirms the broader H1 Platform launch, but it is press-release/product context, not terms.</p>
+      <a class="src" href="https://web.archive.org/web/20260602173548/https://www.hackerone.com/product/h1-continuous-testing" target="_blank" rel="noopener noreferrer">web.archive.org (launch capture, Jun 2)</a>
+      <a class="src" href="https://www.hackerone.com/product/h1-continuous-testing" target="_blank" rel="noopener noreferrer">hackerone.com/product/h1-continuous-testing</a>
+      <a class="src" href="https://www.businesswire.com/news/home/20260602345813/en/H1-Platform-Delivers-Continuous-Threat-Exposure-Management-at-AI-Scale-with-Validated-Exploitability" target="_blank" rel="noopener noreferrer">businesswire.com (H1 Platform launch)</a>
+    </div></div>
+    <div class="r-h1 expl"><div class="card">
+      <p>At launch, the Continuous Testing page stated the agents are sharpened using "your prior H1 Bounty findings" and HackerOne's "12+ years of real-world vulnerability data." In context, "your" likely means the customer's own historical findings, but it still openly names bounty findings as context that directs commercial AI agents.</p>
+      <p>The current wording adds that the customer's data works for that engagement only, which is an important clarification. But it still uses the broader phrase "proprietary exploit intelligence informed by testing real enterprise systems." That does not prove misuse of reports, but it still does not clearly map the marketing phrase to the contract categories: submissions, Confidential Information, Non-Identifying Data, or something else.</p>
+    </div></div>
+
+    <!-- June 3 2026 X statement -->
+    <div class="r-h1 when"><div class="d">Jun 3<br>2026</div><span class="tag h1">statement</span></div>
+    <div class="r-h1 cite"><div class="card">
+      <span class="bind no">Not contractually binding · statement</span>
+      <p class="who">HackerOne, official statement on X</p>
+      <p class="eff">June 3, 2026</p>
+      <blockquote>"Researcher submissions are not used to train, fine-tune, or otherwise improve generative AI models."</blockquote>
+      <p class="note"><strong>Context:</strong> Posted a day after the H1 Platform launch, from HackerOne's official X account. The quote is the core denial. HackerOne also says the statement applies across H1 Continuous Testing, H1 Agentic PTaaS, and Hai; third-party model providers are barred from retaining or using researcher data for their own training; and the website wording was revised to make this clearer.</p>
+      <a class="src" href="https://x.com/Hacker0x01/status/2062212560397402480" target="_blank" rel="noopener noreferrer">x.com/Hacker0x01 (statement)</a>
+    </div></div>
+    <div class="r-h1 expl"><div class="card">
+      <p>The wording directly denies the strongest concern: that researcher submissions are used to train, fine-tune, or otherwise improve generative AI models. The remaining gap is the same one in the terms: it does not clearly say whether report-derived Non-Identifying Data is also excluded from training or improvement. So far this statement has not been accompanied by a terms change; §3 and §8 above still read as they do.</p>
+    </div></div>
+
+  </div>
+
+  <section class="conclusion">
+    <div class="eyebrow"></div>
+    <h2>My personal opinion</h2>
+    <div class="cbody">
+      <p>I don't think the trust boundary between a bug bounty platform, programs, and hackers should be based on public posts, interviews, or help-center pages. It should come from clear terms, written with precise wording that keeps every party protected.</p>
+      <p>As of now, I find HackerOne's terms clear on the protection of customer private and confidential data, meaning the programs. But they feel much more open when it comes to what the platform can do with hacker data. By hacker data, I don't only mean the report text itself. I mean the intelligence that can be extracted from it: the techniques, patterns, attack paths, and research ideas behind the report. In my opinion, there is still not much in the terms that clearly protects hackers' novel research and ideas.</p>
+      <p>I believe hackers will always find a way to find new vulnerabilities. But if platforms can extract and scale that knowledge before researchers choose to make it public, they may prevent those researchers from being able to monetize the work they invested in. In the short term, this might help make the web safer at scale. In the long term, though, it is novel research that keeps pushing security forward. If novelty is not clearly protected or rewarded, I believe fewer people will be able to spend time on novel research, and the quality of that research will suffer.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>
