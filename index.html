@@ -26,6 +26,11 @@
   .intro{max-width:70ch;margin:0;font-size:15.5px;line-height:1.65;color:var(--ink)}
   .intro p{margin:0 0 13px}
   .intro p:last-child{margin:0}
+  .recap{max-width:70ch;margin:28px 0 0 122px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--flag);border-radius:10px;padding:15px 17px;color:var(--ink)}
+  .recap p{margin:0 0 10px;font-size:14.5px;line-height:1.6}
+  .recap ul{margin:0;padding-left:20px}
+  .recap li{font-size:13.8px;line-height:1.55;margin:0 0 7px;color:var(--ink)}
+  .recap li:last-child{margin-bottom:0}
   .rule{height:1px;background:var(--line2);border:0;margin:32px 0 0}
 
   .grid{display:grid;grid-template-columns:78px minmax(0,1fr) minmax(0,1.02fr);column-gap:20px}
@@ -92,6 +97,7 @@
   @media (max-width:840px){
     .wrap{padding:34px 15px 60px}
     .masthead{margin-left:0}
+    .recap{margin-left:0}
     .conclusion{margin-left:0}
     .foot{padding-left:0}
     .grid{grid-template-columns:1fr;column-gap:0}
@@ -118,6 +124,17 @@
       <p>What follows is a non-exhaustive timeline of those changes. I have tried to stay factual, while also showing the strongest concern the wording could reasonably allow. This is not proof of what HackerOne has done; it is a reading of what the terms and statements leave open.</p>
     </div>
   </header>
+
+  <section class="recap">
+    <p>As this timeline is not the easiest to read through, here is a small recap of what I found:</p>
+    <ul>
+      <li>There is a clear distinction between aggregated/anonymized data from reports and the report itself.</li>
+      <li>What that aggregated/anonymized data contains is not precisely defined anywhere I could find.</li>
+      <li>Intellectual property, which we keep for our reports, mainly concerns the exact phrasing of the report, not the knowledge, novel research, private tools, or techniques behind it, such as a non-public CVE proof of concept or anything similar.</li>
+      <li>Public statements and docs are more protective than the broadest reading of the terms, but they are not the same thing as clear binding terms.</li>
+    </ul>
+  </section>
+
   <hr class="rule">
 
   <div class="grid">
@@ -336,7 +353,7 @@
     <div class="cbody">
       <p>I don't think the trust boundary between a bug bounty platform, programs, and hackers should be based on public posts, interviews, or help-center pages. It should come from clear terms, written with precise wording that keeps every party protected.</p>
       <p>As of now, I find HackerOne's terms clear on the protection of customer private and confidential data, meaning the programs. But they feel much more open when it comes to what the platform can do with hacker data. By hacker data, I don't only mean the report text itself. I mean the intelligence that can be extracted from it: the techniques, patterns, attack paths, and research ideas behind the report. In my opinion, there is still not much in the terms that clearly protects hackers' novel research and ideas.</p>
-      <p>I believe hackers will always find a way to find new vulnerabilities. But if platforms can extract and scale that knowledge before researchers choose to make it public, they may prevent those researchers from being able to monetize the work they invested in. In the short term, this might give an impression of making the web more secure fast. But in my opinion, in the long term, though, it is novel research that keeps pushing security forward. If novelty is not clearly protected or rewarded, I believe fewer people will be able to spend time on novel research, and the quality of that research will suffer.</p>
+      <p>I believe hackers will always find a way to find new vulnerabilities. But if platforms can extract and scale that knowledge before researchers choose to make it public, they may prevent those researchers from being able to monetize the work they invested in. In the short term, this might give the impression of making the web more secure fast. But in my opinion, in the long term, it is novel research that keeps pushing security forward. If novelty is not clearly protected or rewarded, I believe fewer people will be able to spend time on novel research, and the quality of that research will suffer.</p>
     </div>
   </section>
 </div>
